@@ -10,21 +10,24 @@ using std::string;
 using std::to_string;
 using std::vector;
 
-// DONE: An example of how to read data from the filesystem
+// Read name of operating system (pretty name)
+// file consists of key-value pairs 
 string LinuxParser::OperatingSystem() {
   string line;
   string key;
   string value;
-  std::ifstream filestream(kOSPath);
-  if (filestream.is_open()) {
-    while (std::getline(filestream, line)) {
+  std::ifstream filestream(kOSPath); // create file stream
+  if (filestream.is_open()) { // check if we can open file stream
+    while (std::getline(filestream, line)) { // as long as we can read another line from the file stream, keep going
+      // we split each line into a key-value pair (two tokens)
+      // character replacement, since keys have spaces etc. 
       std::replace(line.begin(), line.end(), ' ', '_');
       std::replace(line.begin(), line.end(), '=', ' ');
       std::replace(line.begin(), line.end(), '"', ' ');
-      std::istringstream linestream(line);
+      std::istringstream linestream(line); // create line stream
       while (linestream >> key >> value) {
         if (key == "PRETTY_NAME") {
-          std::replace(value.begin(), value.end(), '_', ' ');
+          std::replace(value.begin(), value.end(), '_', ' '); // revert replacements made earlier
           return value;
         }
       }
@@ -33,20 +36,21 @@ string LinuxParser::OperatingSystem() {
   return value;
 }
 
-// DONE: An example of how to read data from the filesystem
+// Get OS kernel by parsing one line file 
 string LinuxParser::Kernel() {
-  string os, kernel;
+  string os, version, kernel;
   string line;
-  std::ifstream stream(kProcDirectory + kVersionFilename);
-  if (stream.is_open()) {
-    std::getline(stream, line);
-    std::istringstream linestream(line);
-    linestream >> os >> kernel;
+  std::ifstream stream(kProcDirectory + kVersionFilename); // input file stream from the path for the OS kernel
+  if (stream.is_open()) { // check if we are able to open the stream
+    std::getline(stream, line); // get a line from the stream and store it in our line string 
+    std::istringstream linestream(line); // create string stream from string (allows to pull tokens off of the string)
+    linestream >> os >> version >> kernel; // kernel is thrid token in file
   }
   return kernel;
 }
 
-// BONUS: Update this to use std::filesystem
+// Get process ids
+// essentially every directory name in /proc/ that is integer
 vector<int> LinuxParser::Pids() {
   vector<int> pids;
   DIR* directory = opendir(kProcDirectory.c_str());
@@ -69,8 +73,21 @@ vector<int> LinuxParser::Pids() {
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() { return 0.0; }
 
-// TODO: Read and return the system uptime
-long LinuxParser::UpTime() { return 0; }
+// Read and return the system uptime
+long LinuxParser::UpTime() { 
+  string uptime;
+  string line;
+  std::ifstream stream(kProcDirectory + kUptimeFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    linestream >> uptime;
+    return stol(uptime);  // string to long
+  }
+
+  return 0;
+  
+}
 
 // TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() { return 0; }
