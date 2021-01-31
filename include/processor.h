@@ -5,7 +5,7 @@ class Processor {
  public:
   float Utilization();  
 
-  //  necessary private members
+  // necessary private members
  private:
     static int previdle, previowait, prevuser, prevnice, prevsystem, previrq, prevsoftirq, prevsteal;
 };

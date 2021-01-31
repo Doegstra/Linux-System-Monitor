@@ -27,29 +27,29 @@ float Processor::Utilization() {
     // guide how to use the numbers in int_utils
     // https://stackoverflow.com/questions/23367857/accurate-calculation-of-cpu-usage-given-in-percentage-in-linux
 
-    int user{int_utils[0]};
-    int nice{int_utils[1]};
-    int system{int_utils[2]};
-    int idle{int_utils[3]};
-    int iowait{int_utils[4]};
-    int irq{int_utils[5]};
-    int softirq{int_utils[6]};
-    int steal{int_utils[7]};
+    int user{int_utils[0]};    // 43240
+    int nice{int_utils[1]};    // 8595
+    int system{int_utils[2]};  // 16028
+    int idle{int_utils[3]};    // 164053
+    int iowait{int_utils[4]};  // 2184
+    int irq{int_utils[5]};     // 0
+    int softirq{int_utils[6]}; // 385
+    int steal{int_utils[7]};   // 0
 
-    int PrevIdle = previdle + previowait;
-    int Idle = idle + iowait;
+    int PrevIdle = previdle + previowait;  // 0 + 0 = 0
+    int Idle = idle + iowait;  // 164053 + 2184 = 166237
 
-    int PrevNonIdle = prevuser + prevnice + prevsystem + previrq + prevsoftirq + prevsteal;
-    int NonIdle = user + nice + system + irq + softirq + steal;
+    int PrevNonIdle = prevuser + prevnice + prevsystem + previrq + prevsoftirq + prevsteal; // 0 + 0 + 0 + 0 + 0 + 0 = 0
+    int NonIdle = user + nice + system + irq + softirq + steal;  // 43240 + 8595 + 16028 + 0 + 385 = 68248
 
-    int PrevTotal = PrevIdle + PrevNonIdle;
-    int Total = Idle + NonIdle;
+    int PrevTotal = PrevIdle + PrevNonIdle;  // 0 + 0 = 0
+    int Total = Idle + NonIdle;  // 166237 + 68248 = 234485
 
     // differentiate: actual value minus the previous one
-    int totald = Total - PrevTotal;
-    int idled = Idle - PrevIdle;
+    int totald = Total - PrevTotal;  // 234485 + 0 = 234485
+    int idled = Idle - PrevIdle;  // 166237 + 0 = 166237
 
-    float CPU_Percentage = (totald - idled)/totald;
+    float CPU_Percentage = (float)(totald - idled)/(float)totald;  // (234485 - 166237)/234485 = 0.291
 
     previdle = idle;
     previowait = iowait;

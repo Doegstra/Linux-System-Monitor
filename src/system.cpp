@@ -15,17 +15,27 @@ using std::string;
 using std::vector;
 
 // Return the system's CPU
-// old Processor& System::Cpu() { return cpu_; }
-Processor& System::Cpu() { return cpu_; }
+Processor& System::Cpu() { 
+    return cpu_; 
+}
 
 // Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() { 
+    vector<int> processes = LinuxParser::Pids();
+    processes_.clear(); // delete what's already in there, then fill again
+    for (size_t i = 0; i < processes.size(); i++) {
+        processes_.emplace_back(Process(processes[i]));
+    }
+    // sort vector according to how the <operator was overloaded
+    std::sort(processes_.rbegin(), processes_.rend());
+    return processes_; 
+}
 
 // Return the system's kernel identifier (string)
-std::string System::Kernel() { return LinuxParser::Kernel(); }
+std::string System::Kernel() const { return LinuxParser::Kernel(); }
 
 // Return the system's memory utilization
-float System::MemoryUtilization() { return LinuxParser::MemoryUtilization(); }
+float System::MemoryUtilization() const { return LinuxParser::MemoryUtilization(); }
 
 // Return the operating system name
 std::string System::OperatingSystem() { return LinuxParser::OperatingSystem(); }
