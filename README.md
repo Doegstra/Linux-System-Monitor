@@ -4,7 +4,7 @@ System Monitor Project in the Object Oriented Programming Course of the [Udacity
 
 Follow along with the classroom lesson to complete the project!
 
-<img src="https://github.com/Doegstra/Linux-System-Monitor/blob/main/img/system-monitor.gif" width="400"/>
+<img src="https://github.com/Doegstra/Linux-System-Monitor/blob/main/images/system-monitor.gif" width="400"/>
 
 ## Udacity Linux Workspace
 [Udacity](https://www.udacity.com/) provides a browser-based Linux [Workspace](https://engineering.udacity.com/creating-a-gpu-enhanced-virtual-desktop-for-udacity-497bdd91a505) for students. 
@@ -32,7 +32,7 @@ This project uses [Make](https://www.gnu.org/software/make/). The Makefile has f
 2. Build the project: `make build`
 
 3. Run the resulting executable: `./build/monitor`
-<img src="https://github.com/Doegstra/Linux-System-Monitor/blob/main/img/system-monitor.gif" width="400"/>
+<img src="https://github.com/Doegstra/Linux-System-Monitor/blob/main/images/system-monitor.gif" width="400"/>
 
 4. Follow along with the lesson.
 
